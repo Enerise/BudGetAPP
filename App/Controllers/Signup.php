@@ -19,6 +19,7 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
 
+            $user->sendActivationEmail();
             $this->redirect('/signup/success');
         } else {
             View::renderTemplate('Signup/new.html', [
@@ -30,5 +31,17 @@ class Signup extends \Core\Controller
     public function successAction()
     {
         View::renderTemplate('Signup/success.html');
+    }
+
+    public function activateAction()
+    {
+        User::activate($this->route_params['token']);
+
+        $this->redirect('/signup/activated');
+    }
+
+    public function activatedAction()
+    {
+        View::renderTemplate('Signup/activated.html');
     }
 }
