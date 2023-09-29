@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block footer %}
+<script src="/public/js/app.js"></script>
+    <!-- <script>
+    
+        
+        $(document).ready(function() {
+
+            $('#formPassword').validate({
+                rules: {
+                    password: {
+                        required: true,
+                        minlength: 6,
+                        validPassword: true
+                    },
+                    password_confirmation: {
+                        equalTo: '#inputPassword'
+                    }
+                }
+            });
+        });
+    </script> -->
+
+{% endblock %}
+
+{% block body %}
+
+<header>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark " style="background-color: #3F2305;">
+      <div class="container-fluid">
+
+        <a class="navbar-brand brand" href="index.html"> <img src="/Zdjecia/icons8-calculator-50.png" height="30" alt="Calculator" class="d-inline-block align-text-top"> BudgetApp</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          </ul>
+
+          <div class="d-flex mx-1 navbar-nav  mb-2 mb-lg-0">
+            <a class="btn btn-outline-success" href="/signup/new" role="button">Zarejestruj się</a>
+          </div>
+          <div class="d-flex mx-1 navbar-nav mb-2 mb-lg-0">
+            <a class="btn btn-outline-primary" href="log_page.html" role="button">Zaloguj się</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  </header>
+
+  <header>
+    <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:50px">
+      <h1 class="fw-bold display-6 "> <img src="/Zdjecia/person-plus-fill.svg"
+          class="d-inline-block align-text-top login" height="55" alt="">
+        Rejestracja</h1>
+    </div>
+  </header>
+  <section>
+    {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container text-center" style="margin-top:20px">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" action="/password/reset-password" id="formPassword">
+                <input type="hidden" name="token" value="{{ token }}" />
+          
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+              </svg></span>
+            <input id="inputPassword" type="password" class="form-control" name="password" placeholder="Hasło" aria-label="Hasło"
+              aria-describedby="basic-addon1" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+              </svg></span>
+            <input id="inputPasswordConfirmation" type="password" class="form-control" name="password_confirmation" placeholder="Powtórz hasło" aria-label="Powtórz hasło"
+              aria-describedby="basic-addon1" required>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-outline-success btn-px-4 mb-5" 
+            style="border-color: #cccac8 !important;">Zmień hasło</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 20% !important;">
+    <footer class="py-3 my-4">
+      <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+    </footer>
+  </div>
+
+{% endblock %}

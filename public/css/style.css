@@ -1,0 +1,203 @@
+body {
+    background-color: #F5F5F5;
+}
+
+.brand {
+    color: #F5F5F5 !important;
+}
+
+.brand:hover {
+    color: #F2EAD3 !important;
+}
+
+.hiperlink {
+    color: black !important;
+}
+
+.hiperlink:hover {
+    color: rgba(24, 23, 23, 0.842) !important;
+}
+
+.kolor {
+    color: black;
+    background-color: #F2EAD3;
+
+}
+
+.zdjecie {
+    height: 80px;
+}
+
+.btn-primary,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #3F2305 !important;
+    border-color: #3F2305 !important;
+    color: #F5F5F5;
+}
+
+.btn-primary:hover {
+    background-color: #2c1904 !important;
+}
+
+.btn-outline-secondary,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active {
+    color: #3F2305 !important;
+    border-color: #3F2305 !important;
+}
+
+.btn-outline-secondary:hover {
+    color: #3F2305 !important;
+    background-color: #DFD7BF !important;
+    border-color: #DFD7BF !important;
+
+}
+
+.btn-outline-success,
+.btn-outline-success:focus,
+.btn-outline-success:active {
+    background-color: #F2EAD3 !important;
+    border-color: #F2EAD3 !important;
+    color: #3F2305 !important;
+}
+
+.btn-outline-success:hover {
+    background-color: #DFD7BF !important;
+    border-color: #DFD7BF !important;
+}
+
+.btn-outline-primary,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    background-color: #3F2305 !important;
+    color: #F5F5F5 !important;
+    border-color: #F5F5F5 !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #F2EAD3 !important;
+    border-color: #F2EAD3 !important;
+    color: #3F2305 !important;
+}
+
+.icon-square {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+}
+
+.nav-item {
+    color: #F2EAD3 !important;
+}
+
+
+li {
+    background-color: #3F2305 !important;
+    margin-right: 10px;
+    color: black !important;
+    border-color: #F2EAD3 !important;
+    border: 100px !important;
+}
+
+li:hover {
+    background-color: #271503 !important;
+    color: black !important;
+}
+
+.box {
+    border: 2px solid #3F2305;
+    border-radius: 20px;
+
+}
+
+.color-text {
+    color: #3F2305;
+}
+
+.piechart {
+    margin-top: 100px;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 38%;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background-image: conic-gradient(green 163deg,
+            orange 0);
+}
+
+.legenda {
+    height: 50px;
+    width: 100px;
+    border: 2px solid black;
+}
+
+@media (max-width: 1400px) {
+    .piechart {
+        width: 400px;
+        height: 400px;
+        left: 36%;
+    }
+}
+
+
+@media (max-width: 1200px) {
+    .piechart {
+        width: 350px;
+        height: 350px;
+        left: 35%;
+    }
+}
+
+@media (max-width: 992px) {
+    .zdjecie {
+        height: 60px;
+    }
+
+    .login {
+        height: 45px;
+    }
+
+    .piechart {
+        width: 300px;
+        height: 300px;
+        left: 34%;
+    }
+}
+
+@media (max-width: 767px) {
+    .zdjecie {
+        height: 45px;
+    }
+
+    .login {
+        height: 40px;
+    }
+
+    .picture_log {
+        margin-top: 20px;
+
+    }
+
+    .box-margin {
+        margin-top: 40px !important;
+    }
+
+    .piechart {
+        width: 220px;
+        height: 220px;
+        left: 33%;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .piechart {
+        width: 150px;
+        height: 150px;
+        left: 32%;
+    }
+}
