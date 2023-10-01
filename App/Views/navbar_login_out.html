@@ -1,0 +1,30 @@
+{# navbar_login_out.html #}
+
+{% block navbar %}
+<header>
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark " style="background-color: #3F2305;">
+    <div class="container-fluid">
+
+      <a class="navbar-brand brand" href="/"> <img src="img/icons8-calculator-50.png" height="30"
+          alt="Calculator" class="d-inline-block align-text-top"> BudGetAPP</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <div class="d-flex mx-1 navbar-nav  mb-2 mb-lg-0">
+          <a class="btn btn-outline-success" href="/signup/new" role="button">Zarejestruj się</a>
+        </div>
+
+        <div class="d-flex mx-1 navbar-nav mb-2 mb-lg-0">
+          <a class="btn btn-outline-primary" href="/login" role="button">Zaloguj się</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+{% endblock %}
