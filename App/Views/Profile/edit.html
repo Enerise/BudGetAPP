@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block footer %}
+<script src="/public/js/app.js"></script>
+
+    <script>
+        
+        var userId = '{{ user.id }}';
+
+        $(document).ready(function() {
+
+            $('#formProfile').validate({
+                rules: {
+                    name: 'required',
+                    email: {
+                        required: true,
+                        email: true,
+                        remote: {
+                            url: '/account/validate-email',
+                            data: {
+                                ignore_id: function() {
+                                    return userId;
+                                }
+                            }
+                        }
+                    },
+                    password: {
+                        minlength: 6,
+                        validPassword: true
+                    },
+                    password_confirmation: {
+                        equalTo: '#inputPassword'
+                    }
+                },
+                messages: {
+                    email: {
+                        remote: 'email already taken'
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+<header>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark " style="background-color: #3F2305;">
+      <div class="container-fluid">
+
+        <a class="navbar-brand brand" href="index.html"> <img src="/Zdjecia/icons8-calculator-50.png" height="30" alt="Calculator" class="d-inline-block align-text-top"> BudgetApp</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          </ul>
+
+          <div class="d-flex mx-1 navbar-nav  mb-2 mb-lg-0">
+            <a class="btn btn-outline-success" href="/signup/new" role="button">Zarejestruj się</a>
+          </div>
+          <div class="d-flex mx-1 navbar-nav mb-2 mb-lg-0">
+            <a class="btn btn-outline-primary" href="log_page.html" role="button">Zaloguj się</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+  </header>
+
+  <header>
+    <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:50px">
+      <h1 class="fw-bold display-6 "> <img src="/Zdjecia/person-plus-fill.svg"
+          class="d-inline-block align-text-top login" height="55" alt="">
+        Rejestracja</h1>
+    </div>
+  </header>
+  <section>
+    {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container text-center" style="margin-top:20px">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" id="formProfile" action="/profile/update">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+              </svg></span>
+            <input id="inputName" type="text" class="form-control" name="name" placeholder="Imię" aria-label="Imię"
+              aria-describedby="basic-addon1" value="{{ user.name }}" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-envelope-at-fill" viewBox="0 0 16 16">
+                <path
+                  d="M2 2A2 2 0 0 0 .05 3.555L8 8.414l7.95-4.859A2 2 0 0 0 14 2H2Zm-2 9.8V4.698l5.803 3.546L0 11.801Zm6.761-2.97-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 9.671V4.697l-5.803 3.546.338.208A4.482 4.482 0 0 1 12.5 8c1.414 0 2.675.652 3.5 1.671Z" />
+                <path
+                  d="M15.834 12.244c0 1.168-.577 2.025-1.587 2.025-.503 0-1.002-.228-1.12-.648h-.043c-.118.416-.543.643-1.015.643-.77 0-1.259-.542-1.259-1.434v-.529c0-.844.481-1.4 1.26-1.4.585 0 .87.333.953.63h.03v-.568h.905v2.19c0 .272.18.42.411.42.315 0 .639-.415.639-1.39v-.118c0-1.277-.95-2.326-2.484-2.326h-.04c-1.582 0-2.64 1.067-2.64 2.724v.157c0 1.867 1.237 2.654 2.57 2.654h.045c.507 0 .935-.07 1.18-.18v.731c-.219.1-.643.175-1.237.175h-.044C10.438 16 9 14.82 9 12.646v-.214C9 10.36 10.421 9 12.485 9h.035c2.12 0 3.314 1.43 3.314 3.034v.21Zm-4.04.21v.227c0 .586.227.8.581.8.31 0 .564-.17.564-.743v-.367c0-.516-.275-.708-.572-.708-.346 0-.573.245-.573.791Z" />
+              </svg></span>
+            <input id="inputEmail" type="email" class="form-control" name="email" placeholder="Email" aria-label="Email"
+              aria-describedby="basic-addon1" value="{{ user.email }}" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+              </svg></span>
+            <input id="inputPassword" type="password" class="form-control" name="password" placeholder="Hasło" aria-label="Hasło"
+              aria-describedby="helpBlock">
+              <span id="helpBlock">Leave blank to keep current password</span>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon4"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
+              </svg></span>
+            <input id="inputPasswordConfirmation" type="password" class="form-control" name="password_confirmation" placeholder="Powtórz hasło" aria-label="Powtórz hasło"
+              aria-describedby="basic-addon1" required>
+          </div>
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-outline-success btn-px-4 mb-5" 
+            style="border-color: #cccac8 !important;">Zapisz</button>
+            <a href="/profile/show">Cancel</a>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 20% !important;">
+    <footer class="py-3 my-4">
+      <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+    </footer>
+  </div>
+
+{% endblock %}
