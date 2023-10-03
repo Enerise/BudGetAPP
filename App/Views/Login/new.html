@@ -1,45 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}Logowanie{% endblock %}
 
 {% block body %}
 
-<header>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark " style="background-color: #3F2305;">
-      <div class="container-fluid">
-
-        <a class="navbar-brand brand" href="index.html"> <img src="/Zdjecia/icons8-calculator-50.png" height="30"
-            alt="Calculator" class="d-inline-block align-text-top"> BudgetApp</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          </ul>
-
-          <div class="d-flex mx-1 navbar-nav  mb-2 mb-lg-0">
-            <a class="btn btn-outline-success" href="registration_page.html" role="button">Zarejestruj się</a>
-          </div>
-          <div class="d-flex mx-1 navbar-nav mb-2 mb-lg-0">
-            <a class="btn btn-outline-primary" href="log_page.html" role="button">Zaloguj się</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-  </header>
+{% use "navbar_login_out.html" with navbar as parent_navbar%}
+{{ block('parent_navbar') }}
+{% block navbar %}
+{% endblock %}
 
   <header>
     <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:50px">
-      <h1 class="fw-bold display-6 "> <img src="/Zdjecia/box-arrow-in-right.svg"
+      <h1 class="fw-bold display-6 "> <img src="/img/box-arrow-in-right.svg"
           class="d-inline-block align-text-top login" height="55" alt="">
         Logowanie</h1>
     </div>
   </header>
     <section>
+      {% for message in flash_messages %}
+  <div class="text-center alert alert-{{ message.type }}">
+    {{ message.body }}
+  </div>
+  {% endfor %}
       <div class="container text-center" style="margin-top:20px">
         <div class="row">
           <div class="col-md-6 offset-md-3">
@@ -63,12 +45,16 @@
               <input id="inputPassword" name="password" type="password" class="form-control" placeholder="Hasło" aria-label="Hasło"
                 aria-describedby="basic-addon1">
             </div>
-            <div>
-              <input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Remember me
+            <div class="mb-3">
+              <input class="form-check-input" type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} id="flexCheckDefault"/> 
+              <label class="form-check-label" for="flexCheckDefault">
+                Zapamiętaj mnie
+              </label>
             </div>
-            <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-outline-success btn-px-4 mb-5" role="button" style="border-color: #cccac8 !important;">Zaloguj się</button></div>
-            <a href="/password/forgot">Forgot password?</a>
+            
+            <div class="d-grid gap-2 mb-0">
+            <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button" style="border-color: #cccac8 !important;">Zaloguj się</button></div>
+            <div><a href="/password/forgot" class="color-text">Zapomniałeś hasła?</a></div>
         </form>
           </div>
         </div>

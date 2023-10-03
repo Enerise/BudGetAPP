@@ -1,45 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Rejestracja konta{% endblock %}
 
 {% block body %}
 
-<header>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark " style="background-color: #3F2305;">
-      <div class="container-fluid">
-
-        <a class="navbar-brand brand" href="index.html"> <img src="/Zdjecia/icons8-calculator-50.png" height="30" alt="Calculator" class="d-inline-block align-text-top"> BudgetApp</a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          </ul>
-
-          <div class="d-flex mx-1 navbar-nav  mb-2 mb-lg-0">
-            <a class="btn btn-outline-success" href="/signup/new" role="button">Zarejestruj się</a>
-          </div>
-          <div class="d-flex mx-1 navbar-nav mb-2 mb-lg-0">
-            <a class="btn btn-outline-primary" href="log_page.html" role="button">Zaloguj się</a>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-  </header>
+{% use "navbar_login_out.html" with navbar as parent_navbar%}
+{{ block('parent_navbar') }}
+{% block navbar %}
+{% endblock %}
 
   <header>
     <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:50px">
-      <h1 class="fw-bold display-6 "> <img src="/Zdjecia/person-plus-fill.svg"
+      <h1 class="fw-bold display-6 "> <img src="/img/person-plus-fill.svg"
           class="d-inline-block align-text-top login" height="55" alt="">
-        Sukces! Zarejestrowałeś się</h1>
+        Rejestracja</h1>
     </div>
   </header>
-  
+  <section>
+  <div class="container text-center" style="margin-top:20px">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <p>Sukces! Dziękuję za rejestrację.</p>
 
+        <p>Proszę sprawdź swój email w celu aktywacji konta.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
   <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 20% !important;">
     <footer class="py-3 my-4">

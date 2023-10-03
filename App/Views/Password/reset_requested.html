@@ -1,11 +1,46 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block title %}Forgot password{% endblock %}
 
 {% block body %}
 
-    <h1>Request password reset</h1>
-
-    <p>Please check your email.</p>
-
+{% use "navbar_login_out.html" with navbar as parent_navbar%}
+{{ block('parent_navbar') }}
+{% block navbar %}
 {% endblock %}
+
+
+<header>
+    <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:50px">
+      <h1 class="fw-bold display-6 "> <img src="/img/box-arrow-in-right.svg"
+          class="d-inline-block align-text-top login" height="55" alt="">
+          Request password reset</h1>
+    </div>
+  </header>
+    <section>
+      {% for message in flash_messages %}
+  <div class="text-center alert alert-{{ message.type }}">
+    {{ message.body }}
+  </div>
+  {% endfor %}
+      <div class="container text-center" style="margin-top:20px">
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <p>Please check your email.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <div class="container border-top d-flex justify-content-center align-content-end"
+      style="margin-top: 30% !important;">
+      <footer class="py-3 my-4">
+        <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+
+      </footer>
+    </div>
+
+    {% endblock %}
+
+   

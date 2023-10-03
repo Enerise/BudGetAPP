@@ -65,10 +65,6 @@ class User extends \Core\Model
         if (static::emailExists($this->email, $this->id ?? null)) {
             $this->errors[] = 'email already taken';
         }
-        // Password
-        // if ($this->password != $this->password_confirmation) {
-        //     $this->errors[] = 'Password must match confirmation';
-        // }
 
         if (isset($this->password)) {
 
