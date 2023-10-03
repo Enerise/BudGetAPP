@@ -36,7 +36,7 @@ class Profile extends Authenticated
 
             Flash::addMessage('Changes saved');
 
-            $this->redirect('/profile/show');
+            $this->redirect('/index');
         } else {
 
             View::renderTemplate('Profile/edit.html', [
