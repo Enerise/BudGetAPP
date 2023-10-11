@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Dodaj przychód{% endblock %}
+
+{% block body %}
+
+{% use "navbar_login_in.html" with navbar as parent_navbar%}
+{{ block('parent_navbar') }}
+{% block navbar %}
+{% endblock %}
+
+  <header>
+    <div class="d-flex justify-content-center mb-4 p-3 text-center kolor" style="margin-top: 60px">
+      <h1 class="fw-bold display- "> <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+        class="bi bi-currency-dollar d-inline-block align-text-top" viewBox="0 0 16 16">
+        <path
+          d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z" />
+      </svg>Dodaj przychód</h1>
+    </div>
+  </header>
+
+  <section>
+    <div class="container text-center" style="margin-top:10px">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h2>Wprowadź dane:</h2>
+          <form method="post" action="/income/create">
+          <div class="input-group my-3">
+            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="inputamount" name="amount" type="number" min="1" class="form-control"  placeholder="Kwota" aria-label="Kwota"
+              aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group my-3">
+            <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input type="date" class="form-control" value="{{ currentDate }}" name="date" aria-label="2023-07-15"
+              aria-describedby="basic-addon1">
+          </div>
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8.5 1.75v2.716l.047-.002c.312-.012.742-.016 1.051.046.28.056.543.18.738.288.273.152.456.385.56.642l.132-.012c.312-.024.794-.038 1.158.108.37.148.689.487.88.716.075.09.141.175.195.248h.582a2 2 0 0 1 1.99 2.199l-.272 2.715a3.5 3.5 0 0 1-.444 1.389l-1.395 2.441A1.5 1.5 0 0 1 12.42 16H6.118a1.5 1.5 0 0 1-1.342-.83l-1.215-2.43L1.07 8.589a1.517 1.517 0 0 1 2.373-1.852L5 8.293V1.75a1.75 1.75 0 0 1 3.5 0z" />
+              </svg></label>
+            <select class="form-select" id="inputGroupSelect01" name="incomeCategory">
+              <option selected>Wybierz kategorię</option>
+              {% for userIncome in userIncomes %}
+            <option>{{ userIncome.name }}</option>
+        {% endfor %}
+            </select>
+          </div>
+
+          <div class="input-group my-3">
+            <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input type="text" class="form-control" placeholder="Komentarz" name="comment" aria-label="Komentarz"
+              aria-describedby="basic-addon1">
+          </div>
+          <div class="d-flex justify-content-between">
+            <a class="col-4 col-md-3 col-lg-2 btn btn-outline-success btn-px-4 mb-5" href="/index"
+              role="button" style="border-color: #cccac8 !important; background-color: #f1ded3 !important;">Anuluj</a>
+              <button type="submit" class="col-4 col-md-3 col-lg-2 btn btn-outline-success btn-px-4 mb-5" role="button" style="border-color: #cccac8 !important; background-color: #e6f1d0 !important;">Dodaj</button></div>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 15% !important;">
+    <footer class="py-3 my-4">
+      <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+
+    </footer>
+  </div>
+  
+{% endblock %}

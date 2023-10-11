@@ -19,6 +19,9 @@ class Signup extends \Core\Controller
 
         if ($user->save()) {
 
+            $user->copyDefaultExpensesCategory();
+            $user->copyDefaultPaymentMethods();
+            $user->copyDefaultIncomesCategory();
             $user->sendActivationEmail();
             $this->redirect('/signup/success');
         } else {

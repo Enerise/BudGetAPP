@@ -333,4 +333,61 @@ class User extends \Core\Model
 
         return false;
     }
+
+    public function copyDefaultExpensesCategory()
+    {
+        $user = static::findByEmail($this->email);
+        if ($user) {
+            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name)
+                SELECT :user_id, expenses_category_default.name
+                FROM expenses_category_default
+                ORDER BY expenses_category_default.id ASC';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function copyDefaultPaymentMethods()
+    {
+        $user = static::findByEmail($this->email);
+        if ($user) {
+            $sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name)
+                SELECT :user_id, payment_methods_default.name
+                FROM payment_methods_default
+                ORDER BY payment_methods_default.id ASC';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function copyDefaultIncomesCategory()
+    {
+        $user = static::findByEmail($this->email);
+        if ($user) {
+            $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+                SELECT :user_id, incomes_category_default.name
+                FROM incomes_category_default
+                ORDER BY incomes_category_default.id ASC';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
 }
