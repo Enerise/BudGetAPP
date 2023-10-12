@@ -42,6 +42,11 @@ class ExpenseDB extends \Core\Model
 
     public function save()
     {
+
+        if (($this->paymentMethod == NULL) || ($this->expenseCategory == NULL)) {
+            return false;
+        }
+
         $sql = 'INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment)
             SELECT :user_id, expenses_category_assigned_to_users.id, payment_methods_assigned_to_users.id, :amount, :date_of_expense, :expense_comment
             FROM expenses_category_assigned_to_users, payment_methods_assigned_to_users
