@@ -33,7 +33,10 @@ class Income extends Authenticated
             $this->redirect('/income/success');
         } else {
             View::renderTemplate('Income/new.html', [
-                'user' => $user
+                'user' => $this->user,
+                'userErrors' => $income,
+                'userIncomes' => IncomeDB::getUserIncomeCategories(),
+                'currentDate' => Date::getTheCurrentDate()
             ]);
         }
     }

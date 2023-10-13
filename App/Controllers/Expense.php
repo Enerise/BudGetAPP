@@ -35,7 +35,11 @@ class Expense extends Authenticated
             $this->redirect('/expense/success');
         } else {
             View::renderTemplate('Expense/new.html', [
-                'user' => $user
+                'user' => $this->user,
+                'userErrors' => $expense,
+                'userExpenses' => ExpenseDB::getUserExpenseCategories(),
+                'userPaymentMethods' => ExpenseDB::getUserPaymentMethods(),
+                'currentDate' => Date::getTheCurrentDate()
             ]);
         }
     }
