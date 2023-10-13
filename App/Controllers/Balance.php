@@ -23,21 +23,23 @@ class Balance extends Authenticated
         //var_dump($currentMonth);
         //exit();
 
-        $balance = new BalanceDB();
+        //$balance = new BalanceDB();
 
         // $show = BalanceDB::getBalanceWithSumOfAllCategoriesIncomes();
         // var_dump($show);
         // exit();
 
-        // $show = BalanceDB::getSumOFIncomes();
-        // var_dump($show);
-        // exit();
+        //$show = BalanceDB::calculateBalance();
+        //var_dump($show);
+        //exit();
 
         View::renderTemplate('Balance/index.html', [
             'user' => $this->user,
             'sumAmountForCategoriesOfIncomes' => BalanceDB::getBalanceWithSumOfAllCategoriesIncomes(),
             'userParticularIncomes' => BalanceDB::getParticularIncomes(),
             'sumAmountForCategoriesOfExpenses' => BalanceDB::getBalanceWithSumOfAllCategoriesExpenses(),
+            'userParticularExpenses' => BalanceDB::getParticularExpenses(),
+            'balance' => BalanceDB::calculateBalance(),
             //'currentDate' => Date::getTheCurrentDate()
         ]);
     }
