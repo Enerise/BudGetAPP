@@ -75,7 +75,11 @@ class ExpenseDB extends \Core\Model
         }
 
         if (!isset($this->expenseCategory)) {
-            $this->errors[] = 'Wybór kategorii wydatku jest wyamagany';
+            $this->errors[] = 'Wybór kategorii wydatku jest wymagany';
+        }
+
+        if (!((is_numeric($this->amount)) && ($this->amount > 0))) {
+            $this->errors[] = 'Wprowadź dodatnią liczbę';
         }
     }
 }

@@ -54,10 +54,58 @@ class IncomeDB extends \Core\Model
         return false;
     }
 
+    public function addIncomeCategory()
+    {
+        $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+            VALUES (:user_id, :name)';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+    public function changeIncomesCategory()
+    {
+        $sql = 'UPDATE incomes_category_assigned_to_users
+                    SET incomes_category_assigned_to_users.name = :name
+                    WHERE incomes_category_assigned_to_users.name = :selectCategory AND user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':selectCategory', $this->incomeCategory, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
+
+    public function deleteIncomesCategory()
+    {
+        $sql = 'DELETE FROM incomes_category_assigned_to_users
+        WHERE incomes_category_assigned_to_users.name = :name AND user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':name', $this->incomeCategory, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
     public function validate()
     {
         if (!isset($this->incomeCategory)) {
             $this->errors[] = 'Wybór kategorii przychodu jest wymagany';
+        }
+
+        if (!((is_numeric($this->amount)) && ($this->amount > 0))) {
+            $this->errors[] = 'Wprowadź dodatnią liczbę';
         }
     }
 }
