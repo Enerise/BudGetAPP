@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Zmiana danych{% endblock %}
+
+{% block body %}
+
+{% use "navbar_login_in.html" with navbar as parent_navbar%}
+{{ block('parent_navbar') }}
+{% block navbar %}
+{% endblock %}
+
+  <header>
+    <div class="d-flex justify-content-center p-3 text-center kolor" style="margin-top:60px">
+      <h1 class="fw-bold display-6 "> <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-x-lg d-inline-block align-text-top" viewBox="0 0 16 16">
+        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+      </svg>Usuwanie swojego konta</h1>
+    </div>
+  </header>
+  <section>
+    {% if user.errors is not empty %}
+        <p>Errors:</p>
+        <ul>
+            {% for error in user.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <div class="container text-center" style="margin-top:20px">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" id="deleteProfile" action="/profile/deleteAccount">
+                <h5 class="my-4">{{ current_user.name }}, czy na pewno chcesz usunąć swoje konto?</h5>
+          <div class="d-flex justify-content-between">
+            <a class="col-4 col-md-3 col-lg-2 btn btn-outline-success btn-px-4 mb-5" href="/settings/show"
+              role="button" style="border-color: #cccac8 !important; background-color: #f1ded3 !important;">Anuluj</a>
+              <button type="submit" class="col-4 col-md-3 col-lg-2 btn btn-outline-success btn-px-4 mb-5" role="button" style="border-color: #cccac8 !important; background-color: #e6f1d0 !important;">Usuń</button></div>
+    
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 20% !important;">
+    <footer class="py-3 my-4">
+      <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+    </footer>
+  </div>
+
+{% endblock %}

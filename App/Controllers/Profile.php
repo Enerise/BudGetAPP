@@ -44,4 +44,29 @@ class Profile extends Authenticated
             ]);
         }
     }
+
+    public function confirmDeleteAccountAction()
+    {
+
+        View::renderTemplate('Profile/deleteAccount.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    public function deleteAccountAction()
+    {
+        if ($this->user->deleteProfile(??$_POST)) {
+
+            Auth::logout();
+
+            $this->redirect('/login/show-delete-message');
+        }
+    }
+
+    public function showDeleteMessageAction()
+    {
+        Flash::addMessage('Account successfully deleted');
+
+        $this->redirect('/');
+    }
 }

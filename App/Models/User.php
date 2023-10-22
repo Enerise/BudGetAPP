@@ -334,6 +334,23 @@ class User extends \Core\Model
         return false;
     }
 
+    public function deleteProfile()
+    {
+
+        if ($user) {
+            $sql = 'DELETE FROM expenses, expenses_category_assigned_to_users, incomes, incomes_category_assigned_to_users, payment_methods_assigned_to_users, users 
+            WHERE user_id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
     public function copyDefaultExpensesCategory()
     {
         $user = static::findByEmail($this->email);
