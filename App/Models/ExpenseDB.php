@@ -68,6 +68,154 @@ class ExpenseDB extends \Core\Model
         return false;
     }
 
+    public function findTheSameNameOfExpensesCategory()
+    {
+        $sql = "SELECT name FROM expenses_category_assigned_to_users WHERE user_id = :user_id AND expenses_category_assigned_to_users.name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $this->newExpenseCategory, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addExpensesCategory()
+    {
+        $this->validateSameExpensesCategory();
+
+        if (empty($this->errors)) {
+            $sql = 'INSERT INTO expenses_category_assigned_to_users (user_id, name)
+            VALUES (:user_id, :name)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->newExpenseCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function changeExpensesCategory()
+    {
+        $this->validateSameExpensesCategory();
+
+        if (empty($this->errors)) {
+            $sql = 'UPDATE expenses_category_assigned_to_users
+                    SET expenses_category_assigned_to_users.name = :name
+                    WHERE expenses_category_assigned_to_users.name = :selectCategory AND user_id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->newExpenseCategory, PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':selectCategory', $this->expenseCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function deleteExpensesCategory()
+    {
+        $sql = 'DELETE FROM expenses_category_assigned_to_users
+        WHERE expenses_category_assigned_to_users.name = :name AND user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':name', $this->expenseCategory, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function findTheSameNameOfPaymentMethods()
+    {
+        $sql = "SELECT name FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND payment_methods_assigned_to_users.name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $this->newPaymentMethod, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addPaymentMethods()
+    {
+        $this->validateSamePaymentMethods();
+
+        if (empty($this->errors)) {
+            $sql = 'INSERT INTO payment_methods_assigned_to_users (user_id, name)
+            VALUES (:user_id, :name)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->newPaymentMethod, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function changePaymentMethods()
+    {
+        $this->validateSamePaymentMethods();
+
+        if (empty($this->errors)) {
+            $sql = 'UPDATE payment_methods_assigned_to_users
+                    SET payment_methods_assigned_to_users.name = :name
+                    WHERE payment_methods_assigned_to_users.name = :selectCategory AND user_id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->newPaymentMethod, PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':selectCategory', $this->paymentMethod, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function deletePaymentMethods()
+    {
+        $sql = 'DELETE FROM payment_methods_assigned_to_users
+        WHERE payment_methods_assigned_to_users.name = :name AND user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':name', $this->paymentMethod, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function validateSameExpensesCategory()
+    {
+        if (NULL != $this->findTheSameNameOfExpensesCategory()) {
+            $this->errors[] = 'Taka kategoria już istnieje - wpisz inną nazwę';
+        }
+    }
+
+    public function validateSamePaymentMethods()
+    {
+        if (NULL != $this->findTheSameNameOfPaymentMethods()) {
+            $this->errors[] = 'Taka kategoria już istnieje - wpisz inną nazwę';
+        }
+    }
+
     public function validate()
     {
         if (!isset($this->paymentMethod)) {
