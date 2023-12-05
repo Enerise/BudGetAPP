@@ -26,6 +26,29 @@ session_start();
 $router = new Core\Router();
 
 // Add the routes
+$router->add('api/limit/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}', ['controller' => 'Expense', 'action' => 'limit']);
+
+$router->add('api/monthlyExpenses/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{date:[\da-f\-]+}', ['controller' => 'Expense', 'action' => 'monthlyExpenses']);
+
+$router->add('api/particularIncomes/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'getParticularIncomes']);
+
+$router->add('api/particularExpenses/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'getParticularExpenses']);
+
+$router->add('api/sumOfAmountIncomes/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'getSumAmountForCategoriesOfIncomes']);
+
+$router->add('api/sumOfAmountExpenses/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'getSumAmountForCategoriesOfExpenses']);
+
+$router->add('api/balance/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'getSumOfBalance']);
+
+$router->add('api/updateParticularExpenses/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{amount:[\da-f\-]+}/{date:[\da-f\-]+}/{payment:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{comment:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{expenseid:[\da-f\-]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'updateParticularExpense']);
+
+$router->add('api/deleteParticularExpenses/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{expenseid:[\da-f\-]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'deleteParticularExpense']);
+
+$router->add('api/updateParticularIncomes/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{amount:[\da-f\-]+}/{date:[\da-f\-]+}/{category:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{comment:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{incomeid:[\da-f\-]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'updateParticularIncome']);
+
+$router->add('api/deleteParticularIncomes/{period:[\wżźćńółęąśŻŹĆĄŚĘŁÓŃ ]+}/{incomeid:[\da-f\-]+}/{datestart:[\da-f\-]+}/{dateend:[\da-f\-]+}', ['controller' => 'Balance', 'action' => 'deleteParticularIncome']);
+
+
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('login', ['controller' => 'Login', 'action' => 'new']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);

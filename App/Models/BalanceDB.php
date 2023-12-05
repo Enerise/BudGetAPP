@@ -7,10 +7,8 @@ use \App\Date;
 
 class BalanceDB extends \Core\Model
 {
-    public static function getBalanceWithSumOfAllCategoriesIncomes()
+    public static function getBalanceWithSumOfAllCategoriesIncomes($dateBegin, $dateEnd)
     {
-        $date_begin = Date::getTheFirstDayOfCurrentMonth();
-        $date_end = Date::getTheLastDayOfCurrentMonth();
 
         $sql = "SELECT incomes_category_assigned_to_users.name AS category, 
         SUM(incomes.amount) AS amount 
@@ -26,22 +24,21 @@ class BalanceDB extends \Core\Model
         $db = static::getDB();
         $expenseCategories = $db->prepare($sql);
         $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $expenseCategories->bindValue(':date_begin', $date_begin, PDO::PARAM_STR);
-        $expenseCategories->bindValue(':date_end', $date_end, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_begin', $dateBegin, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_end', $dateEnd, PDO::PARAM_STR);
         $expenseCategories->execute();
 
         return $expenseCategories->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getParticularIncomes()
+    public static function getParticularIncomes($dateBegin, $dateEnd)
     {
-        $date_begin = Date::getTheFirstDayOfCurrentMonth();
-        $date_end = Date::getTheLastDayOfCurrentMonth();
 
         $sql = "SELECT incomes_category_assigned_to_users.name AS category, 
         incomes.amount AS amount,
         incomes.date_of_income AS date,
-        incomes.income_comment AS comment 
+        incomes.income_comment AS comment, 
+        incomes.id AS income_index
         FROM 
         incomes_category_assigned_to_users 
         INNER JOIN incomes ON 
@@ -53,16 +50,16 @@ class BalanceDB extends \Core\Model
         $db = static::getDB();
         $expenseCategories = $db->prepare($sql);
         $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $expenseCategories->bindValue(':date_begin', $date_begin, PDO::PARAM_STR);
-        $expenseCategories->bindValue(':date_end', $date_end, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_begin', $dateBegin, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_end', $dateEnd, PDO::PARAM_STR);
         $expenseCategories->execute();
 
         return $expenseCategories->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getSumOFIncomes()
+    public static function getSumOFIncomes($dateBegin, $dateEnd)
     {
-        $show = static::getParticularIncomes();
+        $show = static::getParticularIncomes($dateBegin, $dateEnd);
         $sumOfAmounts = 0;
 
         foreach ($show as $key => $value) {
@@ -78,10 +75,8 @@ class BalanceDB extends \Core\Model
         return $sumOfAmounts;
     }
 
-    public static function getBalanceWithSumOfAllCategoriesExpenses()
+    public static function getBalanceWithSumOfAllCategoriesExpenses($dateBegin, $dateEnd)
     {
-        $date_begin = Date::getTheFirstDayOfCurrentMonth();
-        $date_end = Date::getTheLastDayOfCurrentMonth();
 
         $sql = "SELECT expenses_category_assigned_to_users.name AS category, 
         SUM(expenses.amount) AS amount 
@@ -97,26 +92,28 @@ class BalanceDB extends \Core\Model
         $db = static::getDB();
         $expenseCategories = $db->prepare($sql);
         $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $expenseCategories->bindValue(':date_begin', $date_begin, PDO::PARAM_STR);
-        $expenseCategories->bindValue(':date_end', $date_end, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_begin', $dateBegin, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_end', $dateEnd, PDO::PARAM_STR);
         $expenseCategories->execute();
 
         return $expenseCategories->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getParticularExpenses()
+    public static function getParticularExpenses($dateBegin, $dateEnd)
     {
-        $date_begin = Date::getTheFirstDayOfCurrentMonth();
-        $date_end = Date::getTheLastDayOfCurrentMonth();
 
         $sql = "SELECT expenses_category_assigned_to_users.name AS category, 
         expenses.amount AS amount,
         expenses.date_of_expense AS date,
-        expenses.expense_comment AS comment 
+        expenses.expense_comment AS comment,
+        payment_methods_assigned_to_users.name AS payment, 
+        expenses.id AS expense_index
         FROM 
-        expenses_category_assigned_to_users 
-        INNER JOIN expenses ON 
+        expenses 
+        INNER JOIN expenses_category_assigned_to_users ON 
         expenses.expense_category_assigned_to_user_id = expenses_category_assigned_to_users.id 
+        INNER JOIN payment_methods_assigned_to_users ON 
+        expenses.payment_method_assigned_to_user_id = payment_methods_assigned_to_users.id 
         WHERE expenses.user_id = :user_id AND 
         expenses.date_of_expense BETWEEN :date_begin AND :date_end
         ORDER BY amount DESC";
@@ -124,16 +121,16 @@ class BalanceDB extends \Core\Model
         $db = static::getDB();
         $expenseCategories = $db->prepare($sql);
         $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-        $expenseCategories->bindValue(':date_begin', $date_begin, PDO::PARAM_STR);
-        $expenseCategories->bindValue(':date_end', $date_end, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_begin', $dateBegin, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':date_end', $dateEnd, PDO::PARAM_STR);
         $expenseCategories->execute();
 
         return $expenseCategories->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function getSumOFExpenses()
+    public static function getSumOFExpenses($dateBegin, $dateEnd)
     {
-        $show = static::getParticularExpenses();
+        $show = static::getParticularExpenses($dateBegin, $dateEnd);
         $sumOfAmounts = 0;
 
         foreach ($show as $key => $value) {
@@ -149,10 +146,83 @@ class BalanceDB extends \Core\Model
         return $sumOfAmounts;
     }
 
-    public static function calculateBalance()
+    public static function updateParticularExpenses($amount, $date, $payment, $category, $expenseID, $comment)
     {
-        $sumOFIncome = static::getSumOFIncomes();
-        $sumOfExpense = static::getSumOFExpenses();
+
+        $sql = 'UPDATE expenses
+        SET expense_category_assigned_to_user_id = (SELECT expenses_category_assigned_to_users.id FROM expenses_category_assigned_to_users WHERE expenses_category_assigned_to_users.name = :expenseCategory AND expenses_category_assigned_to_users.user_id = :user_id),
+
+        payment_method_assigned_to_user_id = (SELECT payment_methods_assigned_to_users.id FROM payment_methods_assigned_to_users WHERE payment_methods_assigned_to_users.name = :paymentMethod AND payment_methods_assigned_to_users.user_id = :user_id),
+
+        amount = :amount,
+        date_of_expense = :date_of_expense,
+        expense_comment = :comment
+        WHERE id = :id AND user_id = :user_id';
+
+
+        $db = static::getDB();
+        $expenseCategories = $db->prepare($sql);
+        $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $expenseCategories->bindValue(':expenseCategory', $category, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':paymentMethod', $payment, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':amount', $amount, PDO::PARAM_INT);
+        $expenseCategories->bindValue(':date_of_expense', $date, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':comment', $comment, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':id', $expenseID, PDO::PARAM_INT);
+        $expenseCategories->execute();
+    }
+
+    public static function updateParticularIncomes($amount, $date, $category, $incomeID, $comment)
+    {
+        $sql = 'UPDATE incomes
+        SET income_category_assigned_to_user_id = (SELECT incomes_category_assigned_to_users.id FROM incomes_category_assigned_to_users WHERE incomes_category_assigned_to_users.name = :incomeCategory AND incomes_category_assigned_to_users.user_id = :user_id),
+
+        amount = :amount,
+        date_of_income = :date_of_income,
+        income_comment = :comment
+        WHERE id = :id AND user_id = :user_id';
+
+
+        $db = static::getDB();
+        $expenseCategories = $db->prepare($sql);
+        $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $expenseCategories->bindValue(':incomeCategory', $category, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':amount', $amount, PDO::PARAM_INT);
+        $expenseCategories->bindValue(':date_of_income', $date, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':comment', $comment, PDO::PARAM_STR);
+        $expenseCategories->bindValue(':id', $incomeID, PDO::PARAM_INT);
+        $expenseCategories->execute();
+    }
+
+    public static function deleteParticularIncomes($incomeID)
+    {
+
+        $sql = 'DELETE FROM incomes
+        WHERE id = :id AND user_id = :user_id';
+
+        $db = static::getDB();
+        $expenseCategories = $db->prepare($sql);
+        $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $expenseCategories->bindValue(':id', $incomeID, PDO::PARAM_INT);
+        $expenseCategories->execute();
+    }
+
+    public static function deleteParticularExpenses($expenseID)
+    {
+        $sql = 'DELETE FROM expenses
+        WHERE id = :id AND user_id = :user_id';
+
+        $db = static::getDB();
+        $expenseCategories = $db->prepare($sql);
+        $expenseCategories->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $expenseCategories->bindValue(':id', $expenseID, PDO::PARAM_INT);
+        $expenseCategories->execute();
+    }
+
+    public static function calculateBalance($dateBegin, $dateEnd)
+    {
+        $sumOFIncome = static::getSumOFIncomes($dateBegin, $dateEnd);
+        $sumOfExpense = static::getSumOFExpenses($dateBegin, $dateEnd);
 
         return $sumOFIncome - $sumOfExpense;
     }

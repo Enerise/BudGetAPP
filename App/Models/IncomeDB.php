@@ -54,10 +54,111 @@ class IncomeDB extends \Core\Model
         return false;
     }
 
+    public function findTheSameNameOfCategory()
+    {
+        $sql = "SELECT name FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND incomes_category_assigned_to_users.name = :name";
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addIncomeCategory()
+    {
+        $this->validateSameCategory();
+
+        if (empty($this->errors)) {
+            $sql = 'INSERT INTO incomes_category_assigned_to_users (user_id, name)
+            VALUES (:user_id, :name)';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function changeIncomesCategory()
+    {
+        $this->validateSameCategory();
+
+        if (empty($this->errors)) {
+            $sql = 'UPDATE incomes_category_assigned_to_users
+                    SET incomes_category_assigned_to_users.name = :name
+                    WHERE incomes_category_assigned_to_users.name = :selectCategory AND user_id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->newIncomeCategory, PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+            $stmt->bindValue(':selectCategory', $this->incomeCategory, PDO::PARAM_STR);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function deleteIncomesCategory()
+    {
+        if ($this->deleteIncomesCategoryCD()) {
+            $sql = 'DELETE FROM incomes_category_assigned_to_users
+        WHERE incomes_category_assigned_to_users.name = :name AND user_id = :user_id';
+
+            $db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $this->incomeCategory, PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+        }
+        return false;
+    }
+
+    public function deleteIncomesCategoryCD()
+    {
+        $sql = 'DELETE incomes FROM incomes
+        INNER JOIN incomes_category_assigned_to_users ON
+        incomes_category_assigned_to_users.id = incomes.income_category_assigned_to_user_id
+        WHERE incomes_category_assigned_to_users.name = :name AND incomes.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':name', $this->incomeCategory, PDO::PARAM_STR);
+        $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function validateSameCategory()
+    {
+        if (NULL != $this->findTheSameNameOfCategory()) {
+            $this->errors[] = 'Taka kategoria już istnieje - wpisz inną nazwę';
+        }
+
+        if (NULL == $this->newIncomeCategory) {
+            $this->errors[] = 'Nie można dodać pustej kategorii - wpisz nazwę.';
+        }
+    }
+
     public function validate()
     {
         if (!isset($this->incomeCategory)) {
             $this->errors[] = 'Wybór kategorii przychodu jest wymagany';
+        }
+
+        if (!((is_numeric($this->amount)) && ($this->amount > 0))) {
+            $this->errors[] = 'Wprowadź dodatnią liczbę';
         }
     }
 }

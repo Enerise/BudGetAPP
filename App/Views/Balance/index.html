@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Bilans{% endblock %}
+
+{% block footer %}
+
+<script src="/js/balance.js"></script>
+
+
+
+{% endblock %}
 
 {% block body %}
 
@@ -25,8 +33,9 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-end">
-            <div class="col-2">
-              <div class=" input-group mb-3">
+            <div id="periodBox" class="col-3">
+              <form id="myForm" action="/balance/Incomes" method="post">
+                <div class=" input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01"
                   style="border: 2px solid #3F2305; background-color: #F2EAD3;"><svg xmlns="http://www.w3.org/2000/svg"
                     width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
@@ -34,20 +43,21 @@
                       d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
                   </svg></label>
 
-                <select class="form-select " id="inputGroupSelect01"
-                  style="border: 2px solid #3F2305; background-color: #F2EAD3; border-left: 0px;" name="period">
-                  <option selected>
+                <select name="selectPeriod" class="form-select " id="selectPeriod"
+                  style="border: 2px solid #3F2305; background-color: #F2EAD3; border-left: 0px;" >
+                  <option selected disabled>
                     Wybierz okres</option>
-                  <option value="current_month">Bieżący miesiąc</option>
-                  <option value="last_month">Poprzedni miesiąc</option>
-                  <option value="current_year">Bieżący rok</option>
-                  <option value="custom">Niestandardowy</option>
+                  <option value="currentMonth">Bieżący miesiąc</option>
+                  <option value="lastMonth">Poprzedni miesiąc</option>
+                  <option value="currentYear">Bieżący rok</option>
+                  <option id="customValue" value="custom">Niestandardowy</option>
                 </select>
-              </div>
+              </div></form>
+              
             </div>
           </div>
           <h4 style="margin-bottom:0px;">Wybrany okres: </h4>
-          <h2 class="fw-bold" style="margin-top:0px;">Bieżący miesiąc</h2>
+          <h2 id ="titleOfPeriod" class="fw-bold" style="margin-top:0px;">Bieżący miesiąc</h2>
         </div>
 
 
@@ -58,95 +68,237 @@
       <div class="row">
         <div class="col-md-11 offset-md-1">
           <div class="row">
-            <div class="col-md-5 box">
+            <div id ="incomeBox" class="col-md-5 box">
               <h4 class="border-bottom p-3 color-text" style="border-color: #3F2305 !important;">Przychody</h4>
-              {% for sumAmountForCategoriesOfIncome in sumAmountForCategoriesOfIncomes %}
-              <h5>{{ sumAmountForCategoriesOfIncome.category }}: {{ sumAmountForCategoriesOfIncome.amount }} zł</h5>
-                {% for userParticularIncome in userParticularIncomes %}
-                  {% if userParticularIncome.category == sumAmountForCategoriesOfIncome.category %}
-                    <p><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                  class="bi bi-arrow-right d-inline-block align-text-top" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd"
-                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                </svg> {{ userParticularIncome.date }} {{ userParticularIncome.amount }} zł {{ userParticularIncome.comment }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                  fill="black" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                  <path
-                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                </svg> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-trash-fill" viewBox="0 0 16 16">
-                  <path
-                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                </svg></p>
-                  {% endif %}
-                {% endfor %}
-            {% endfor %}
-            </div>
-            <div class="col-md-5 offset-md-1 box box-margin">
-              <h4 class="border-bottom p-3 color-text " style="border-color: #3F2305 !important;">Wydatki</h4>
-              {% for sumAmountForCategoriesOfExpense in sumAmountForCategoriesOfExpenses %}
-              <h5>{{ sumAmountForCategoriesOfExpense.category }}: {{ sumAmountForCategoriesOfExpense.amount }} zł</h5>
-
-              {% for userParticularExpense in userParticularExpenses %}
-                  {% if userParticularExpense.category == sumAmountForCategoriesOfExpense.category %}
               
-              <p><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                  class="bi bi-arrow-right d-inline-block align-text-top" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd"
-                    d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
-                </svg> {{ userParticularExpense.date }} {{ userParticularExpense.amount }} zł {{ userParticularExpense.comment }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                  fill="black" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                  <path
-                    d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                </svg> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-trash-fill" viewBox="0 0 16 16">
-                  <path
-                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                </svg></p>
-                {% endif %}
-                {% endfor %}
-            {% endfor %}
+              
             </div>
-            <div class="col-md-9 offset-md-1 box" style="margin-top: 40px; ">
+            <div id ="expenseBox" class="col-md-5 offset-md-1 box box-margin">
+              <h4 class="border-bottom p-3 color-text " style="border-color: #3F2305 !important;">Wydatki</h4>
+             
+            </div>
+            <div class="col-md-9 offset-md-1 box mb-5" style="margin-top: 40px; ">
               <h4 class="border-bottom p-3 color-text " style="border-color: #3F2305 !important;">Bilans</h4>
-              {% if balance > 0 %}
-              <p>Świetnie! Jesteś <span class="fw-bold">{{ balance }} zł</span> na plusie.</p>
-              <p>Trzymaj tak dalej! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                  class="bi bi-emoji-smile" viewBox="0 0 16 16">
-                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                  <path
-                    d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z" />
-                </svg></p>
-                {% elseif balance == 0 %}
-                <p>Stan Twojego konta wynosi <span class="fw-bold">{{ balance }} zł</span> - jesteś na zerze.</p>
-              <p>Nie jest źle! Spróbuj przejrzeć wydatki i przychody - może można gdzieś zaoszczędzić <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-wink" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm1.757-.437a.5.5 0 0 1 .68.194.934.934 0 0 0 .813.493c.339 0 .645-.19.813-.493a.5.5 0 1 1 .874.486A1.934 1.934 0 0 1 10.25 7.75c-.73 0-1.356-.412-1.687-1.007a.5.5 0 0 1 .194-.68z"/>
-              </svg></p>
-                {% else %}
-                <p>Ups! Jesteś <span class="fw-bold">{{ balance }} zł</span> na minusie.</p>
-              <p>Spróbuj przejrzeć wydatki i przychody - może można gdzieś zaoszczędzić <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-wink" viewBox="0 0 16 16">
-                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm1.757-.437a.5.5 0 0 1 .68.194.934.934 0 0 0 .813.493c.339 0 .645-.19.813-.493a.5.5 0 1 1 .874.486A1.934 1.934 0 0 1 10.25 7.75c-.73 0-1.356-.412-1.687-1.007a.5.5 0 0 1 .194-.68z"/>
-              </svg></p>
-                {% endif %}
-            </div>
-
-            <div class="col-md-5 offset-md-3" style="margin-top: 20px !important; ">
-              <h2>Twoje wydatki z <br>bieżącego miesiąca</h2>
-              <div class="legenda d-inline-flex" style="background-color: orange">Jedzenie</div>
-              <div class="legenda d-inline-flex mt-3 ms-3" style="background-color: green;">Transport</div>
-              <div class="piechart"></div>
+        
+              <p id ="balanceValue"></p>
+              <p id ="balanceInfo"></p>
+                
             </div>
           </div>
         </div>
       </div>
     </div>
+            
+    <div class="container">
+      <div class="row"></div>
+      <div class="col-6 offset-3">
+        <h4 class="my-2 text-center">Twoje wydatki z wybranego okresu</h4>
+<canvas id="myChart"></canvas>
+
+      </div>
+              
+            
+    </div>
   </section>
 
-  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 45% !important;">
+  <div class="modal fade" id="modalOfCustomDate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Wybierz daty:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row">
+          <div class="col-6"><p>Początek:</p><input id="inputDateStart" type="date" class="form-control" value="" name="date" aria-label="
+          aria-describedby="basic-addon1" required></div>
+          <div class="col-6"><p>Koniec:</p><input id="inputDateEnd" type="date" class="form-control" value="" name="date" aria-label=""
+          aria-describedby="basic-addon1" required></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="showBalance" type="button" class="btn btn-primary">Pokaż bilans</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalOfChangeExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Zmień wydatek:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="inputAmountExpenseChange" name="amount" type="number" min="1" class="form-control"  placeholder="Kwota" aria-label="Kwota"
+              aria-describedby="basic-addon1" required>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="inputDateExpenseChange" type="date" class="form-control" value="{{ currentDate }}" name="date" aria-label="2023-07-15"
+              aria-describedby="basic-addon1" required>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="selectPaymentExpenseChange"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8.5 1.75v2.716l.047-.002c.312-.012.742-.016 1.051.046.28.056.543.18.738.288.273.152.456.385.56.642l.132-.012c.312-.024.794-.038 1.158.108.37.148.689.487.88.716.075.09.141.175.195.248h.582a2 2 0 0 1 1.99 2.199l-.272 2.715a3.5 3.5 0 0 1-.444 1.389l-1.395 2.441A1.5 1.5 0 0 1 12.42 16H6.118a1.5 1.5 0 0 1-1.342-.83l-1.215-2.43L1.07 8.589a1.517 1.517 0 0 1 2.373-1.852L5 8.293V1.75a1.75 1.75 0 0 1 3.5 0z" />
+              </svg></label>
+            <select class="form-select" id="selectPaymentExpenseChange" name="paymentMethod">
+              <option selected disabled>Wybierz sposób płatności</option>
+              {% for userPaymentMethod in userPaymentMethods %}
+            <option>{{ userPaymentMethod.name }}</option>
+        {% endfor %}
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="selectCategoryExpenseChange"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8.5 1.75v2.716l.047-.002c.312-.012.742-.016 1.051.046.28.056.543.18.738.288.273.152.456.385.56.642l.132-.012c.312-.024.794-.038 1.158.108.37.148.689.487.88.716.075.09.141.175.195.248h.582a2 2 0 0 1 1.99 2.199l-.272 2.715a3.5 3.5 0 0 1-.444 1.389l-1.395 2.441A1.5 1.5 0 0 1 12.42 16H6.118a1.5 1.5 0 0 1-1.342-.83l-1.215-2.43L1.07 8.589a1.517 1.517 0 0 1 2.373-1.852L5 8.293V1.75a1.75 1.75 0 0 1 3.5 0z" />
+              </svg></label>
+            <select class="form-select" id="selectCategoryExpenseChange" name="expenseCategory">
+              <option selected disabled>Wybierz kategorię</option>
+              {% for userExpense in userExpenses %}
+            <option>{{ userExpense.name }}</option>
+        {% endfor %}
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="changeCommentExpense" type="text" class="form-control" placeholder="Komentarz" name="comment" aria-label="Komentarz"
+              aria-describedby="basic-addon1">
+          </div>
+          <input id="expenseIndex" type="hidden" class="form-control" placeholder="Komentarz" name="comment" aria-label="Komentarz"
+              aria-describedby="basic-addon1">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="changeExpense" type="button" class="btn btn-primary">Zmień wydatek</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="modalOfDeleteExpense" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Usuwanie wydatku</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row"><div class="text-center">Czy na pewno chcesz usunąć ten wydatek?</div>
+        <div class="justify-content-center d-inline-flex"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-right d-inline-block align-text-top" viewBox="2 0.25 17 17"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/><p id="dateOfDeleteExpense" class="d-inline-flex"></p>  <p id="amountOfDeleteExpense" class="d-inline-flex"></p>&nbsp;zł</svg>
+        </div>
+      </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="deleteExpense" type="button" class="btn btn-primary">Usuń</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalOfChangeIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Zmień przychód:</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="inputAmountIncomeChange" name="amount" type="number" min="1" class="form-control"  placeholder="Kwota" aria-label="Kwota"
+              aria-describedby="basic-addon1">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="inputDateIncomeChange" type="date" class="form-control" value="{{ currentDate }}" name="date" aria-label="2023-07-15"
+              aria-describedby="basic-addon1">
+          </div>
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputCategoryIncomeChange"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
+                <path
+                  d="M8.5 1.75v2.716l.047-.002c.312-.012.742-.016 1.051.046.28.056.543.18.738.288.273.152.456.385.56.642l.132-.012c.312-.024.794-.038 1.158.108.37.148.689.487.88.716.075.09.141.175.195.248h.582a2 2 0 0 1 1.99 2.199l-.272 2.715a3.5 3.5 0 0 1-.444 1.389l-1.395 2.441A1.5 1.5 0 0 1 12.42 16H6.118a1.5 1.5 0 0 1-1.342-.83l-1.215-2.43L1.07 8.589a1.517 1.517 0 0 1 2.373-1.852L5 8.293V1.75a1.75 1.75 0 0 1 3.5 0z" />
+              </svg></label>
+            <select class="form-select" id="inputCategoryIncomeChange" name="incomeCategory">
+              <option selected disabled>Wybierz kategorię</option>
+              {% for userIncome in userIncomes %}
+            <option>{{ userIncome.name }}</option>
+        {% endfor %}
+            </select>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                <path
+                  d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+              </svg></span>
+            <input id="changeCommentIncome" type="text" class="form-control" placeholder="Komentarz" name="comment" aria-label="Komentarz"
+              aria-describedby="basic-addon1">
+          </div>
+          <input id="incomeIndex" type="hidden" class="form-control" placeholder="Komentarz" name="comment" aria-label="Komentarz"
+              aria-describedby="basic-addon1">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="changeIncome" type="button" class="btn btn-primary">Zmień przychód</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="modalOfDeleteIncome" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Usuwanie przychodu</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row"><div class="text-center">Czy na pewno chcesz usunąć ten przychód?</div>
+        <div class="justify-content-center d-inline-flex"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-right d-inline-block align-text-top" viewBox="2 0.25 17 17"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/><p id="dateOfDeleteIncome" class="d-inline-flex"></p>  <p id="amountOfDeleteEIncome" class="d-inline-flex"></p>&nbsp;zł</svg>
+        </div>
+      </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="deleteIncome" type="button" class="btn btn-primary">Usuń przychód</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 5% !important;">
     <footer class="py-3 my-4">
       <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
     </footer>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
 {% endblock %}
