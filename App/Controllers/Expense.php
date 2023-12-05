@@ -48,4 +48,36 @@ class Expense extends Authenticated
     {
         View::renderTemplate('Expense/success.html');
     }
+
+    public function limitAction()
+    {
+
+        $user_id = $this->user->id;
+        $category = $this->route_params['category'];
+
+
+        echo json_encode(ExpenseDB::getLimit($user_id, $category), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function monthlyExpensesAction()
+    {
+        $user_id = $this->user->id;
+        $category = $this->route_params['category'];
+        $date = $this->route_params['date'];
+
+        echo json_encode(ExpenseDB::getSumOFMonthlyExpenses($user_id, $category, $date), JSON_UNESCAPED_UNICODE);
+    }
+
+    public function periodAction()
+    {
+        echo "jest ok";
+        exit();
+
+
+        $user_id = $this->user->id;
+        $category = $this->route_params['category'];
+        $date = $this->route_params['date'];
+
+        echo json_encode(ExpenseDB::getSumOFMonthlyExpenses($user_id, $category, $date), JSON_UNESCAPED_UNICODE);
+    }
 }

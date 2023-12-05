@@ -5,6 +5,16 @@
 {% block footer %}
 <script src="/public/js/app.js"></script>
 
+<script>
+
+    $(function() {
+       $('#submitButtonModal').on('click', function(e) {
+           $('#deletePaymentMethod').submit();
+       });
+   });   
+   
+   </script>
+
 {% endblock %}
 
 
@@ -37,10 +47,14 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <form method="post" action="/settings/addPaymentMethods">
-                    <h3><svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" fill="currentColor" class="bi bi-plus-lg d-inline-block align-text-top" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-                      </svg> Dodaj nową metodę płatności</h3>
-                    <div class="input-group my-3">
+                    <div class="d-grid gap-2 my-4">
+                        <button class="btn btn-outline-secondary btn-lg px-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddCategory" aria-expanded="false" aria-controls="collapseAddCategory">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                              </svg> Dodaj nową metodę płatności
+                      </button></div>
+                    
+                    <div class="input-group my-3 collapse" id="collapseAddCategory">
                         <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg"
                                 width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path
@@ -49,18 +63,23 @@
                         <input type="text" class="form-control" placeholder="Nazwa nowej metody płatności"
                             name="newPaymentMethod" aria-label="Komentarz" aria-describedby="basic-addon1">
                     </div>
-                    <div class="d-grid gap-2 mb-5">
+                    <div class="collapse" id="collapseAddCategory"><div class="d-grid gap-2 mb-5">
                         <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button"
                             style="border-color: #cccac8 !important;"><img class="d-inline-block align-text-top"
-                            src="/img/plus-lg.svg" alt="" height="23"> Dodaj nową metodę płatności</button>
+                            src="/img/plus-lg.svg" alt="" height="23"> Dodaj nową metodę płatności</button></div>
+                    
                     </div>
                 </form>
                 <form method="post" action="/settings/changePaymentMethods">
-                    <h3><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-clockwise d-inline-block align-text-top" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                      </svg> Zmień istniejącą metodę płatności</h3>
-                    <div class="input-group my-3">
+                    <div class="d-grid gap-2 mb-4">
+                        <button class="btn btn-outline-secondary btn-lg px-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangeCategory" aria-expanded="false" aria-controls="collapseChangeCategory">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                              </svg> Zmień istniejącą metodę płatności
+                      </button></div>
+                    
+                    <div class="input-group my-3 collapse" id="collapseChangeCategory">
                         <label class="input-group-text" for="inputGroupSelect01"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                             height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
                             <path
@@ -73,7 +92,7 @@
                     {% endfor %}
                         </select>
                     </div>
-                    <div class="input-group my-3">
+                    <div class="input-group my-3 collapse" id="collapseChangeCategory">
                         <span class="input-group-text" id="basic-addon3"><svg xmlns="http://www.w3.org/2000/svg"
                                 width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path
@@ -82,17 +101,22 @@
                         <input type="text" class="form-control" placeholder="Nowa nazwa zmienianej metody płatności"
                             name="newPaymentMethod" aria-label="Komentarz" aria-describedby="basic-addon1">
                     </div>
-                    <div class="d-grid gap-2 mb-5">
+                    <div class="collapse" id="collapseChangeCategory"><div class="d-grid gap-2 mb-5">
                         <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button"
                             style="border-color: #cccac8 !important;"><img class="d-inline-block align-text-top"
                             src="/img/arrow-clockwise.svg" alt="" height="23"> Zmień metodę płatności</button>
-                    </div>
+                    </div></div>
+                    
                 </form>
-                <form method="post" action="/settings/deletePaymentMethods">
-                    <h3><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-dash-lg d-inline-block align-text-top" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
-                      </svg> Usuń istniejącą metodę płatności</h3>
-                    <div class="input-group my-3">
+                <form id="deletePaymentMethod" method="post" action="/settings/deletePaymentMethods">
+                    <div class="d-grid gap-2 mb-4">
+                        <button class="btn btn-outline-secondary btn-lg px-4" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeleteCategory" aria-expanded="false" aria-controls="collapseDeleteCategory">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dash-lg d-inline-block align-text-top" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
+                              </svg> Usuń istniejącą metodę płatności
+                      </button></div>
+                    
+                    <div class="input-group my-3 collapse" id="collapseDeleteCategory">
                         <label class="input-group-text" for="inputGroupSelect01"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                             height="16" fill="currentColor" class="bi bi-hand-index-thumb-fill" viewBox="0 0 16 16">
                             <path
@@ -105,11 +129,12 @@
                       {% endfor %}
                         </select>
                     </div>
-                    <div class="d-grid gap-2 mb-5">
-                        <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button"
-                            style="border-color: #cccac8 !important;"><img class="d-inline-block align-text-top"
+                    <div class="collapse" id="collapseDeleteCategory"><div class="d-grid gap-2 mb-5">
+                        <button type="button" class="btn btn-outline-success btn-px-4 mb-3" role="button"
+                            style="border-color: #cccac8 !important;" data-bs-toggle="modal" data-bs-target="#exampleModal"><img class="d-inline-block align-text-top"
                             src="/img/dash-lg.svg" alt="" height="23"> Usuń metodę płatności</button>
-                    </div>
+                    </div></div>
+                    
                 </form>
                 <div class="d-grid gap-2 mb-5">
                     <a class="d-flex justify-content-center gap-1 btn btn-outline-success btn-px-4 mb-2" href="/settings/show"
@@ -124,6 +149,26 @@
                 
 </section>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex justify-content-center">
+          <h1 class="modal-title fs-5 d-flex " id="exampleModalLabel">Usuwanie metody płatności</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center">
+            <div class="d-flex text-center">
+<p>Czy jesteś pewien, że chcesz <span class="fw-bold">usunąć</span> tą <span class="fw-bold">metodę płatności</span>? Spowoduje to nieodracalnie utratę wszystkich wydatków oraz informacji związanych z tą metodą płatności.</p>
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button id="submitButtonModal" type="submit" class="btn btn-primary">Usuń kategorię</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 10% !important;">
     <footer class="py-3 my-4">

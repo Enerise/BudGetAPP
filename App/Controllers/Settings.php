@@ -120,6 +120,8 @@ class Settings extends Authenticated
         }
     }
 
+
+
     public function changeExpensesCategoryAction()
     {
         $expense = new ExpenseDB($_POST);
@@ -144,6 +146,21 @@ class Settings extends Authenticated
         } else {
             View::renderTemplate('Settings/show.html', [
                 'user' => $this->user
+            ]);
+        }
+    }
+
+    public function changeLimitCategory()
+    {
+        $expense = new ExpenseDB($_POST);
+
+        if ($expense->changeLimitCategory()) {
+            $this->redirect('/settings/success');
+        } else {
+            View::renderTemplate('Settings/manage_Expenses_Category.html', [
+                'user' => $this->user,
+                'userErrors' => $expense,
+                'userExpenses' => ExpenseDB::getUserExpenseCategories(),
             ]);
         }
     }
