@@ -8,6 +8,16 @@ body {
     height: 100px;
 }
 
+.errorBox{
+    border: 2px solid #bb252f;
+    border-radius: 10px;
+}
+
+.alertBox{
+    border: 2px solid #F2EAD3;
+    border-radius: 10px;
+}
+
 .brand {
     color: #F5F5F5 !important;
 }

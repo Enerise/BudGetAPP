@@ -26,11 +26,27 @@
             /**
               * Show password toggle button
               */
-            $('#inputPassword').hideShowPassword({
-                show: false,
-                innerToggle: 'focus'
+              $('#inputPassword').hideShowPassword({
+              show: false,
+              innerToggle: 'focus',
+              toogle:{
+              },
+              wrapper:{
+              },
+              states: {
+                shown: {
+                  toggle: {
+                    content: 'Ukryj',
+                  }
+                },
+                hidden: {
+                  toggle: {
+                    content: 'Pokaż',
+                  }
+                }
+              }
             });
-        });
+          });
     </script>
 
 {% endblock %}
@@ -51,12 +67,21 @@
   </header>
   <section>
     {% if user.errors is not empty %}
-        <p>Errors:</p>
+    <div class="container">
+      <div class="errorBox my-3">
+        <p class="text-center fw-bold my-1">Błąd!</p>
         <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
+          {% for error in userErrors.errors %}
+          <div class="d-flex justify-content-center"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+              fill="currentColor" class="d-inline-block align-text-top bi bi-dot" viewBox="0 -1 16 16">
+              <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+            </svg>
+            <li class=" my-1" style="background-color: #FFFFFF !important; list-style-type: none;">{{ error }}</li>
+          </div>
+          {% endfor %}
         </ul>
+      </div>
+    </div>
     {% endif %}
     <div class="container text-center" style="margin-top:20px">
       <div class="row">

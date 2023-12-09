@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dodawanie nowego wydatku{% endblock %}
+{% block title %}Dodaj wydatek{% endblock %}
 
 {% block footer %}
 <script src="/js/limit.js"></script>
@@ -16,56 +16,67 @@
 {% block navbar %}
 {% endblock %}
 
-  <header>
-    <div class="d-flex justify-content-center mb-4 p-3 text-center kolor" style="margin-top: 60px">
-      <h1 class="fw-bold display- "> <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-          class="bi bi-cart-fill d-inline-block align-text-top " viewBox="0 0 16 16">
-          <path
-            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-        </svg>
-        Dodaj wydatek</h1>
-    </div>
-    {% for message in flash_messages %}
+<header>
+  <div class="d-flex justify-content-center mb-4 p-3 text-center kolor" style="margin-top: 60px">
+    <h1 class="fw-bold display- "> <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+        class="bi bi-cart-fill d-inline-block align-text-top " viewBox="0 0 16 16">
+        <path
+          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+      </svg>
+      Dodaj wydatek</h1>
+  </div>
+  {% for message in flash_messages %}
   <div class="text-center alert alert-{{ message.type }}">
     {{ message.body }}
   </div>
   {% endfor %}
-  </header>
+</header>
 
-  <section>
-    {% if userErrors.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in userErrors.errors %}
-                <li style="background-color: #FFFFFF !important;">{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <div class="container text-center" style="margin-top:10px">
-      <div class="row justify-content-md-center">
-        <div class="col-md-4 boxLimit mx-2 p-2 mb-3">
-          <h5>Ustawiony limit dla kategorii</h5>
-          <p id="categoryLimit">Wymagany wybór kategorii</p>
+<section>
+  {% if userErrors.errors is not empty %}
+  <div class="container">
+    <div class="errorBox my-3">
+      <p class="text-center fw-bold my-1">Błąd!</p>
+      <ul>
+        {% for error in userErrors.errors %}
+        <div class="d-flex justify-content-center"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+            fill="currentColor" class="d-inline-block align-text-top bi bi-dot" viewBox="0 -1 16 16">
+            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+          </svg>
+          <li class=" my-1" style="background-color: #FFFFFF !important; list-style-type: none;">{{ error }}</li>
         </div>
-        <div class="col-md-4 boxLimit mx-2 p-2 mb-3">
-          <h5>Suma wydatków dla kategorii</h5>
-        <p id="spendCategoryLimit">Wymagany wybór kategorii i daty</p></div>
-        <div class="col-md-6 boxLimit mx-2 p-2 mb-3">
-          <h5>Pozostałość do wydania w danej kategorii</h5>
-        <p id="restLimitToSpend">Wymagany wybór kategorii, daty i kwoty</p></div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+  <div class="container text-center" style="margin-top:10px">
+    <div class="row justify-content-md-center">
+      <div class="col-md-4 boxLimit mx-2 p-2 mb-3">
+        <h5>Ustawiony limit dla kategorii</h5>
+        <p id="categoryLimit">Wymagany wybór kategorii</p>
       </div>
-      <div class="row">
-        <div class="col-md-6 offset-md-3">
-          <h2>Wprowadź dane:</h2>
-          <form method="post" action="/expense/create">
+      <div class="col-md-4 boxLimit mx-2 p-2 mb-3">
+        <h5>Suma wydatków dla kategorii</h5>
+        <p id="spendCategoryLimit">Wymagany wybór kategorii i daty</p>
+      </div>
+      <div class="col-md-6 boxLimit mx-2 p-2 mb-3">
+        <h5>Pozostałość do wydania w danej kategorii</h5>
+        <p id="restLimitToSpend">Wymagany wybór kategorii, daty i kwoty</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2>Wprowadź dane:</h2>
+        <form method="post" action="/expense/create">
           <div class="input-group my-3">
             <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                 height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                 <path
                   d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
               </svg></span>
-            <input id="inputAmount" name="amount"type="number" min="1" class="form-control"  placeholder="Kwota" aria-label="Kwota"
-              aria-describedby="basic-addon1" required>
+            <input id="inputAmount" name="amount" type="number" min="1" class="form-control" placeholder="Kwota"
+              aria-label="Kwota" aria-describedby="basic-addon1" required>
           </div>
           <div class="input-group my-3">
             <span class="input-group-text" id="basic-addon2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -73,8 +84,8 @@
                 <path
                   d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
               </svg></span>
-            <input id="inputDate" type="date" class="form-control" value="{{ currentDate }}" name="date" aria-label="2023-07-15"
-              aria-describedby="basic-addon1" required>
+            <input id="inputDate" type="date" class="form-control" value="{{ currentDate }}" name="date"
+              aria-label="2023-07-15" aria-describedby="basic-addon1" required>
           </div>
 
           <div class="input-group mb-3">
@@ -86,8 +97,8 @@
             <select class="form-select" id="inputGroupSelect01" name="paymentMethod">
               <option selected disabled>Wybierz sposób płatności</option>
               {% for userPaymentMethod in userPaymentMethods %}
-            <option>{{ userPaymentMethod.name }}</option>
-        {% endfor %}
+              <option>{{ userPaymentMethod.name }}</option>
+              {% endfor %}
             </select>
           </div>
 
@@ -100,8 +111,8 @@
             <select class="form-select" id="selectCategory" name="expenseCategory">
               <option selected disabled>Wybierz kategorię</option>
               {% for userExpense in userExpenses %}
-            <option>{{ userExpense.name }}</option>
-        {% endfor %}
+              <option>{{ userExpense.name }}</option>
+              {% endfor %}
             </select>
           </div>
 
@@ -115,24 +126,22 @@
               aria-describedby="basic-addon1">
           </div>
           <div class="d-grid gap-2 mb-5">
-            <!-- <a class="col-4 col-md-3 col-lg-2 btn btn-outline-success btn-px-4 mb-5" href="/index"
-              role="button" style="border-color: #cccac8 !important; background-color: #f1ded3 !important;">Anuluj</a> -->
-              <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button" style="border-color: #cccac8 !important;">Dodaj</button></div>
+            <button type="submit" class="btn btn-outline-success btn-px-4 mb-3" role="button"
+              style="border-color: #cccac8 !important;">Dodaj</button>
           </div>
-        </form>
-        </div>
       </div>
+      </form>
     </div>
-  </section>
-
-
-  <div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 15% !important;">
-    <footer class="py-3 my-4">
-      <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
-
-    </footer>
   </div>
+  </div>
+</section>
 
 
-  
+<div class="container border-top d-flex justify-content-center align-content-end" style="margin-top: 15% !important;">
+  <footer class="py-3 my-4">
+    <p class="text-center text-body-secondary">© 2023 Magdalena Brodala</p>
+
+  </footer>
+</div>
+
 {% endblock %}

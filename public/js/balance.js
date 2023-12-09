@@ -4,11 +4,12 @@ const labelTooltip = () => {
     return '';
 }
 
-function addData(chart, label, newData, color) {
+function addData(chart, label, newData) {
     chart.data.labels.push(label);
+    //console.log(color);
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(newData);
-        dataset.backgroundColor.push(color);
+        // dataset.backgroundColor.push("rgba(252, 233, 0, 1)");
     });
 
     chart.update();
@@ -21,7 +22,7 @@ function removeData(chart) {
     while (total >= 0) {
         chart.data.labels.pop();
         chart.data.datasets[0].data.pop();
-        chart.data.datasets[0].backgroundColor.pop();
+        //chart.data.datasets[0].backgroundColor.pop();
         total--;
     }
 
@@ -35,7 +36,18 @@ let pieChart = new Chart(myChart, {
         datasets: [{
             label: '',
             data: [],
-            backgroundColor: []
+            backgroundColor: [
+                "rgba(255, 179, 56, 1)",
+                "rgba(255, 225, 56, 1)",
+                "rgba(255, 202, 56, 1)",
+                "rgba(255, 146, 56, 1)",
+                "rgba(216, 208, 56, 1)",
+                "rgba(179, 255, 56, 1)",
+                "rgba(56, 255, 91, 1)",
+                "rgba(255, 253, 56, 1)",
+                "rgba(94, 255, 55, 1)",
+                "rgba(56, 255, 159, 1)",
+            ]
         }]
     },
     options: {
@@ -75,9 +87,6 @@ let buttonShowBalance = document.getElementById("showBalance");
 periodField.addEventListener('change', async () => {
 
     period = await periodField.value;
-    console.log(period);
-
-
 
     switch (period) {
         case "currentMonth":
@@ -111,7 +120,7 @@ periodField.addEventListener('change', async () => {
 })
 
 buttonShowBalance.addEventListener('click', async () => {
-    console.log("jestem2");
+
     if ((dateStartField.value == "") || (dateEndField.value == "")) {
         alert("Proszę wybrać poprawną datę")
     } else {
@@ -187,10 +196,10 @@ const renderBoxOfExpenses = async () => {
         const newH5Element = document.createElement("h5");
         newH5Element.innerHTML =
             sumAmountForCategoriesOfExpenses[i].category + `: ` + sumAmountForCategoriesOfExpenses[i].amount + " zł";
-        var r = Math.floor(Math.random() * 255);
-        var g = Math.floor(Math.random() * 255);
+        //var r = Math.floor(Math.random() * 255);
+        //var g = Math.floor(Math.random() * 255);
 
-        addData(pieChart, sumAmountForCategoriesOfExpenses[i].category, sumAmountForCategoriesOfExpenses[i].amount, `rgba(${r}, ${g}, 0, 1)`);
+        addData(pieChart, sumAmountForCategoriesOfExpenses[i].category, sumAmountForCategoriesOfExpenses[i].amount);
 
         expenseBoxToRemove.appendChild(newH5Element);
         for (let j = 0; j < particularExpenses.length; j++) {
@@ -253,30 +262,9 @@ const renderBoxOfExpenses = async () => {
             commentFieldChange.value = element.getAttribute('comment');
             expenseIndexField.value = element.getAttribute('expenseID');
 
-            buttonChangeExpense.addEventListener('click', async () => {
-
-                if (commentFieldChange.value == "") {
-                    commentFieldChange.value = "empty";
-                }
-
-                if ((amountFieldChange.value <= 0) || (dateFieldChange.value == "")) {
-                    alert("Nie można pozostawić pola kwoty i daty pustej")
-                }
-                else {
-                    updateParticularExpenses(period, amountFieldChange.value, dateFieldChange.value, paymentFieldChange.value, categoryFieldChange.value, commentFieldChange.value, expenseID)
-
-                    expenseBoxToRemove.remove();
-                    incomeBoxToRemove.remove();
-                    createDivBoxExpense();
-                    createDivBoxIncome();
-
-                    getData(period);
-                }
-
-
-            })
         })
     })
+
 
 
     document.querySelectorAll('svg.deleteExpenses').forEach(element => {
@@ -286,21 +274,47 @@ const renderBoxOfExpenses = async () => {
             amountFieldDelete.innerHTML = "&nbsp;" + element.getAttribute('amount');
             dateFieldDelete.innerHTML = "&nbsp;" + element.getAttribute('date');
 
-            buttonDeleteExpense.addEventListener('click', async () => {
-
-                $('#modalOfDeleteExpense').modal('hide');
-                deleteParticularExpenses(period, expenseIndexField.value);
-                expenseBoxToRemove.remove();
-                incomeBoxToRemove.remove();
-                createDivBoxExpense();
-                createDivBoxIncome();
-
-                getData(period);
-            })
-
         })
     })
 }
+
+buttonChangeExpense.addEventListener('click', async () => {
+
+    if (commentFieldChange.value == "") {
+        commentFieldChange.value = "empty";
+    }
+
+    if ((amountFieldChange.value <= 0) || (dateFieldChange.value == "")) {
+        alert("Nie można pozostawić pola kwoty i daty pustej")
+    }
+    else {
+        updateParticularExpenses(period, amountFieldChange.value, dateFieldChange.value, paymentFieldChange.value, categoryFieldChange.value, commentFieldChange.value, expenseIndexField.value)
+
+        expenseBoxToRemove.remove();
+        incomeBoxToRemove.remove();
+        createDivBoxExpense();
+        createDivBoxIncome();
+        $('#modalOfChangeExpense').modal('hide');
+        let text = "Sukces! Udało się zmienić wybrany wydatek";
+        renderBoxOfAlerts(text);
+        getData(period);
+    }
+
+
+})
+
+buttonDeleteExpense.addEventListener('click', async () => {
+
+    $('#modalOfDeleteExpense').modal('hide');
+    deleteParticularExpenses(period, expenseIndexField.value);
+    expenseBoxToRemove.remove();
+    incomeBoxToRemove.remove();
+    createDivBoxExpense();
+    createDivBoxIncome();
+    let text = "Sukces! Udało się usunąć wybrany wydatek";
+    renderBoxOfAlerts(text);
+    getData(period);
+})
 
 //income
 let amountFieldChangeIncome = document.getElementById("inputAmountIncomeChange");
@@ -355,7 +369,7 @@ const renderBoxOfIncomes = async () => {
                 newSVG3Element.setAttribute("comment", `${incomeComment}`);
                 newSVG3Element.setAttribute("incomeID", `${incomeID}`);
                 newSVG3Element.style = "cursor: pointer";
-                newSVG3Element.id = `incomeBen${i} `;
+                newSVG3Element.id = `incomeBen${i}`;
                 newSVG3Element.innerHTML = iconBen;
                 incomeBoxToRemove.appendChild(newSVG3Element);
                 const newBRElement = document.createElement("br");
@@ -373,28 +387,6 @@ const renderBoxOfIncomes = async () => {
             commentFieldChangeIncome.value = element.getAttribute('comment');
             incomeIndexField.value = element.getAttribute('incomeID');
 
-            buttonChangeIncome.addEventListener('click', async () => {
-
-                if (commentFieldChangeIncome.value == "") {
-                    commentFieldChangeIncome.value = "empty";
-                }
-
-                if ((amountFieldChangeIncome.value <= 0) || (dateFieldChangeIncome.value == "")) {
-                    alert("Nie można pozostawić pola kwoty i daty pustej")
-                }
-                else {
-
-                    updateParticularIncomes(period, amountFieldChangeIncome.value, dateFieldChangeIncome.value, categoryFieldChangeIncome.value, commentFieldChangeIncome.value, incomeIndexField.value);
-                    expenseBoxToRemove.remove();
-                    incomeBoxToRemove.remove();
-                    createDivBoxExpense();
-                    createDivBoxIncome();
-
-                    getData(period);
-                }
-
-
-            })
         })
     })
 
@@ -405,22 +397,47 @@ const renderBoxOfIncomes = async () => {
             amountFieldDeleteIncome.innerHTML = "&nbsp;" + element.getAttribute('amount');
             dateFieldDeleteIncome.innerHTML = "&nbsp;" + element.getAttribute('date');
 
-            buttonDeleteIncome.addEventListener('click', async () => {
 
-                $('#modalOfDeleteIncome').modal('hide');
-                deleteParticularIncomes(period, incomeIndexField.value);
-                expenseBoxToRemove.remove();
-                incomeBoxToRemove.remove();
-                createDivBoxExpense();
-                createDivBoxIncome();
-
-                getData(period);
-            })
 
         })
     })
 }
 
+buttonChangeIncome.addEventListener('click', async () => {
+
+    if (commentFieldChangeIncome.value == "") {
+        commentFieldChangeIncome.value = "empty";
+    }
+
+    if ((amountFieldChangeIncome.value <= 0) || (dateFieldChangeIncome.value == "")) {
+        alert("Nie można pozostawić pola kwoty i daty pustej")
+    }
+    else {
+
+        updateParticularIncomes(period, amountFieldChangeIncome.value, dateFieldChangeIncome.value, categoryFieldChangeIncome.value, commentFieldChangeIncome.value, incomeIndexField.value);
+        expenseBoxToRemove.remove();
+        incomeBoxToRemove.remove();
+        createDivBoxExpense();
+        createDivBoxIncome();
+        $('#modalOfChangeIncome').modal('hide');
+        let text = "Sukces! Udało się zmienić wybrany przychód";
+        renderBoxOfAlerts(text);
+        getData(period);
+    }
+})
+
+buttonDeleteIncome.addEventListener('click', async () => {
+
+    $('#modalOfDeleteIncome').modal('hide');
+    deleteParticularIncomes(period, incomeIndexField.value);
+    expenseBoxToRemove.remove();
+    incomeBoxToRemove.remove();
+    createDivBoxExpense();
+    createDivBoxIncome();
+    let text = "Sukces! Udało się usunąć wybrany przychód";
+    renderBoxOfAlerts(text);
+    getData(period);
+})
 
 const renderBoxOfBalance = async () => {
     calculatedBalance = await getSumOfBalance(period);
@@ -437,6 +454,29 @@ const renderBoxOfBalance = async () => {
     }
 
 };
+
+let alertsField = document.getElementById("alertBox");
+
+const renderBoxOfAlerts = async (text) => {
+
+    const newDivElement = document.createElement("div");
+    newDivElement.classList.add("alertBox");
+    newDivElement.id = `alertBoxToDelete`
+    alertsField.appendChild(newDivElement);
+
+    let alertsFieldToRemove = await document.getElementById("alertBoxToDelete");
+    const newPElement = document.createElement("p");
+    newPElement.classList.add("my-3");
+    newPElement.classList.add("text-center");
+    newPElement.innerHTML = `${text}`;
+    alertsFieldToRemove.appendChild(newPElement);
+
+    setTimeout(removeBox, 9000);
+};
+
+const removeBox = async () => {
+    await alertBoxToDelete.remove();
+}
 
 
 
