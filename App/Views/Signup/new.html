@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Rejestracja{% endblock %}
 
 {% block footer %}
 <script src="/js/hideShowPassword.min.js"></script>
-<script src="/public/js/app.js"></script>
+<script src="/js/app.js"></script>
 
     <script>
         
@@ -36,8 +36,8 @@
               show: false,
               innerToggle: 'focus',
               toogle:{
-               //position: 'top',
-                // verticalAlign: 'top'
+              },
+              wrapper:{
               },
               states: {
                 shown: {
@@ -73,12 +73,21 @@
   </header>
   <section>
     {% if user.errors is not empty %}
-        <p>Errors:</p>
+    <div class="container">
+      <div class="errorBox my-3">
+        <p class="text-center fw-bold my-1">Błąd!</p>
         <ul>
-            {% for error in user.errors %}
-                <li style="background-color: #FFFFFF !important;">{{ error }}</li>
-            {% endfor %}
+          {% for error in userErrors.errors %}
+          <div class="d-flex justify-content-center"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+              fill="currentColor" class="d-inline-block align-text-top bi bi-dot" viewBox="0 -1 16 16">
+              <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3" />
+            </svg>
+            <li class=" my-1" style="background-color: #FFFFFF !important; list-style-type: none;">{{ error }}</li>
+          </div>
+          {% endfor %}
         </ul>
+      </div>
+    </div>
     {% endif %}
     <div class="container text-center" style="margin-top:20px">
       <div class="row">
@@ -109,7 +118,7 @@
                 <path
                   d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z" />
               </svg></span>
-            <input id="inputPassword" type="password" class="form-control" name="password" placeholder="Hasło" aria-label="Hasło"
+            <input id="inputPassword" type="password" class="form-control" width="200" name="password" placeholder="Hasło" aria-label="Hasło"
               aria-describedby="basic-addon1" required>
           </div>
 

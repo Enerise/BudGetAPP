@@ -53,7 +53,7 @@ class Expense extends Authenticated
     {
 
         $user_id = $this->user->id;
-        $category = $this->route_params['category'];
+        $category = Balance::changeCharacter($this->route_params['category']);
 
 
         echo json_encode(ExpenseDB::getLimit($user_id, $category), JSON_UNESCAPED_UNICODE);
@@ -62,7 +62,7 @@ class Expense extends Authenticated
     public function monthlyExpensesAction()
     {
         $user_id = $this->user->id;
-        $category = $this->route_params['category'];
+        $category = Balance::changeCharacter($this->route_params['category']);
         $date = $this->route_params['date'];
 
         echo json_encode(ExpenseDB::getSumOFMonthlyExpenses($user_id, $category, $date), JSON_UNESCAPED_UNICODE);

@@ -31,7 +31,7 @@ class Mail
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
             //Recipients
-            $mail->setFrom(Config::USER_EMAIL, 'Mailer');    //Add a recipient
+            $mail->setFrom(Config::USER_EMAIL, 'BuGetAPP');    //Add a recipient
             $mail->addAddress($to);               //Name is optional
 
 

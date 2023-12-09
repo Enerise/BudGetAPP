@@ -202,7 +202,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Password/reset_email.txt', ['url' => $url]);
         $html = View::getTemplate('Password/reset_email.html', ['url' => $url]);
 
-        Mail::send($this->email, 'Password reset', $text, $html);
+        Mail::send($this->email, 'Reset hasła', $text, $html);
     }
 
     public static function findByPasswordReset($token)
@@ -269,7 +269,7 @@ class User extends \Core\Model
         $text = View::getTemplate('Signup/activation_email.txt', ['url' => $url]);
         $html = View::getTemplate('Signup/activation_email.html', ['url' => $url]);
 
-        Mail::send($this->email, 'Account activation', $text, $html);
+        Mail::send($this->email, 'Aktywacja konta', $text, $html);
     }
 
     public static function activate($value)
@@ -334,21 +334,102 @@ class User extends \Core\Model
         return false;
     }
 
-    public function deleteProfile()
+    public function deleteProfile($idUser)
     {
+        $sql = 'DELETE FROM users 
+            WHERE users.id = :user_id';
 
-        if ($user) {
-            $sql = 'DELETE FROM expenses, expenses_category_assigned_to_users, incomes, incomes_category_assigned_to_users, payment_methods_assigned_to_users, users 
-            WHERE user_id = :user_id';
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
 
-            $db = static::getDB();
-            $stmt = $db->prepare($sql);
+        $stmt->bindValue(':user_id', $idUser, PDO::PARAM_INT);
 
-            $stmt->bindValue(':user_id', $user->id, PDO::PARAM_INT);
+        if ($this->deleteExpensesBelongToUsers($idUser)) {
+        } else {
+            return false;
+        };
 
-            return $stmt->execute();
-        }
-        return false;
+        if ($this->deleteExpensesCategoryBelongToUsers($idUser)) {
+        } else {
+            return false;
+        };
+
+        if ($this->deleteIncomesBelongToUsers($idUser)) {
+        } else {
+            return false;
+        };
+
+        if ($this->deleteIncomesCategoryBelongToUsers($idUser)) {
+        } else {
+            return false;
+        };
+
+        if ($this->deletePaymentMethodsBelongToUsers($idUser)) {
+        } else {
+            return false;
+        };
+
+        return $stmt->execute();
+    }
+
+    public function deleteExpensesBelongToUsers($user)
+    {
+        $sql = 'DELETE FROM expenses 
+            WHERE expenses.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function deleteExpensesCategoryBelongToUsers($user)
+    {
+        $sql = 'DELETE FROM expenses_category_assigned_to_users 
+            WHERE expenses_category_assigned_to_users.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function deleteIncomesBelongToUsers($user)
+    {
+        $sql = 'DELETE FROM incomes
+            WHERE incomes.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function deleteIncomesCategoryBelongToUsers($user)
+    {
+        $sql = 'DELETE FROM incomes_category_assigned_to_users
+            WHERE incomes_category_assigned_to_users.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function deletePaymentMethodsBelongToUsers($user)
+    {
+        $sql = 'DELETE FROM payment_methods_assigned_to_users
+            WHERE payment_methods_assigned_to_users.user_id = :user_id';
+
+        $db = static::getDB();
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindValue(':user_id', $user, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 
     public function copyDefaultExpensesCategory()

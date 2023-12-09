@@ -258,8 +258,8 @@ class Balance extends Authenticated
         $selectedPeriod = $this->route_params['period'];
         $amount = $this->route_params['amount'];
         $date = $this->route_params['date'];
-        $category = $this->route_params['category'];
-        $comment = $this->route_params['comment'];
+        $category = static::changeCharacter($this->route_params['category']);
+        $comment = static::changeCharacter($this->route_params['comment']);
         $incomeID = $this->route_params['incomeid'];
         $dateBegin = $this->route_params['datestart'];
         $dateEnd = $this->route_params['dateend'];
@@ -358,9 +358,9 @@ class Balance extends Authenticated
         $selectedPeriod = $this->route_params['period'];
         $amount = $this->route_params['amount'];
         $date = $this->route_params['date'];
-        $payment = $this->route_params['payment'];
-        $category = $this->route_params['category'];
-        $comment = $this->route_params['comment'];
+        $payment = static::changeCharacter($this->route_params['payment']);
+        $category = static::changeCharacter($this->route_params['category']);
+        $comment = static::changeCharacter($this->route_params['comment']);
         $expenseID = $this->route_params['expenseid'];
         $dateBegin = $this->route_params['datestart'];
         $dateEnd = $this->route_params['dateend'];
@@ -452,5 +452,10 @@ class Balance extends Authenticated
                 return console . log(buttonInnerHTML);
                 break;
         }
+    }
+
+    public static function changeCharacter($sentence)
+    {
+        return str_replace("%20", " ", $sentence);
     }
 }

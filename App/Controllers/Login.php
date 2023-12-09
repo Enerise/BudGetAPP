@@ -34,12 +34,12 @@ class Login extends \Core\Controller
 
             Auth::login($user, $remember_me);
 
-            Flash::addMessage('Login successful');
+            Flash::addMessage('Logowanie zakończone sukcesem');
 
             $this->redirect(Auth::getToPage());
         } else {
 
-            Flash::addMessage('Login unsuccessful, please try again', Flash::WARNING);
+            Flash::addMessage('Logowanie nie powiodło się. Spróbuj ponownie', Flash::WARNING);
 
             View::renderTemplate('Login/new.html', [
                 'email' => $_POST['email'],
@@ -57,7 +57,35 @@ class Login extends \Core\Controller
 
     public function showLogoutMessageAction()
     {
-        Flash::addMessage('Logout successful');
+        Flash::addMessage('Wylogowanie powiodło się');
+
+        $this->redirect('/');
+    }
+
+
+    public function deleteAccountAction()
+    {
+        $user = new User();
+
+        $userId = Auth::getUser();
+
+        if ($user->deleteProfile($userId->id)) {
+            Auth::logout();
+
+            $this->redirect('/login/show-destroy-message');
+        } else {
+            Flash::addMessage('Usunięcie konta nie powiodło się. Zaloguj się i spróbuj ponownie', Flash::WARNING);
+
+            View::renderTemplate('Profile/edit.html', [
+                'user' => $this->userId
+            ]);
+        }
+    }
+
+
+    public function showDestroyMessageAction()
+    {
+        Flash::addMessage('Pomyślnie usunięto konto');
 
         $this->redirect('/');
     }
